@@ -1,0 +1,23 @@
+filebeat.inputs:
+  - type: log
+    enabled: true
+    paths:
+      - /zeek-logs/conn.log
+      - /zeek-logs/dns.log
+      - /zeek-logs/http.log
+      - /zeek-logs/ssl.log
+      - /zeek-logs/weird.log
+      - /zeek-logs/notice.log
+    json.keys_under_root: true
+    json.add_error_key: true
+
+output.elasticsearch:
+  hosts: ["elasticsearch:9200"]
+  index: "zeek-logs-%{+yyyy.MM.dd}"
+
+setup.kibana:
+  host: "kibana:5601"
+
+setup.ilm.enabled: false
+setup.template.name: "zeek"
+setup.template.pattern: "zeek-*"
